@@ -160,6 +160,12 @@ const Task = ({ task, onClose, onSave }) => {
       logError("Save failed: missing task name");
       return;
     }
+    // הגבלת אורך השם כדי שלא יישמר טקסט ארוך מדי
+    if (trimmedName.length > 100) {
+      setError("Task name can be up to 100 characters.");
+      logError("Save failed: task name is too long");
+      return;
+    }
     if (!dueDate) {
       setError("Please choose a due date.");
       logError("Save failed: missing due date");
