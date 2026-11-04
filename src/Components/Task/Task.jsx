@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../Button/Button";
+import { logError } from "../../logger";
 // מודאל הוספה עריכה. טופס בחלון קופץ (פופ אפ) המשמש גם ליצירת משימה חדשה וגם לעריכת משימה קיימת.
 const Overlay = styled.div`
   position: fixed;
@@ -156,10 +157,12 @@ const Task = ({ task, onClose, onSave }) => {
     const trimmedName = name.trim();
     if (!trimmedName) {
       setError("Please enter a task name.");
+      logError("Save failed: missing task name");
       return;
     }
     if (!dueDate) {
       setError("Please choose a due date.");
+      logError("Save failed: missing due date");
       return;
     }
     setError("");

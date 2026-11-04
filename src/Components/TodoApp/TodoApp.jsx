@@ -4,6 +4,7 @@ import CardList from "../CardList/CardList";
 import FilterToolBar from "../FilterToolbar/FilterToolBar";
 import TodoList from "../TodoList/TodoList";
 import { useLocalStorage } from "../../Hooks/useLocalStorage";
+import { logInfo } from "../../logger";
   
 // המוח של האפליקציה, זה המקום שבו הנתונים והלוגיקה החשובים מתגוררים
 const initialTasks = [];
@@ -25,14 +26,17 @@ const ToDoApp = () => {
   // addTask(task) מוסיף משימה חדשה לסוף הרשימה ומעניק לה id ייחודי באמצעות Date.now()
   const addTask = (task) => {
     setTasks((prev) => [...prev, { ...task, id: Date.now() }]);
+    logInfo(`Task added: "${task.task}"`);
   };
  // updateTask(updated) מחליף את המשימה שה id שלה תואם בגרסה הערוכה (משמש בביצוע עריכה וגם בלחיצה על תווית הסטטוס)
   const updateTask = (updated) => {
     setTasks((prev) => prev.map((t) => (t.id === updated.id ? updated : t)));
+    logInfo(`Task updated: "${updated.task}" (status: ${updated.status})`);
   };
   // deleteTask(id) מסיר את המשימה בעלת ה id הזה
   const deleteTask = (id) => {
     setTasks((prev) => prev.filter((t) => t.id !== id));
+    logInfo(`Task deleted: id ${id}`);
   };
 
   // ערכים מחושבים
