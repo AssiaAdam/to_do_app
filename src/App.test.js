@@ -111,3 +111,16 @@ test("שגיאה בשמירה נכתבת ללוג", () => {
   const logs = JSON.parse(localStorage.getItem("appLogs"));
   expect(logs[logs.length - 1]).toContain("ERROR Save failed: missing task name");
 });
+
+// בדיקות לאבטחה
+test("אי אפשר לשמור משימה עם שם ארוך מדי", () => {
+  render(<App />);
+  addTask("a".repeat(101));
+  expect(screen.getByText("Task name can be up to 100 characters.")).toBeInTheDocument();
+});
+
+test("האפליקציה לא קורסת כשהמידע ב localStorage פגום", () => {
+  localStorage.setItem("todoTasks", "not json");
+  render(<App />);
+  expect(screen.getByText("Showing 0 of 0 tasks")).toBeInTheDocument();
+});
