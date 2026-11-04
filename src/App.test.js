@@ -95,3 +95,19 @@ test("משימה שהושלמה לא מסומנת Overdue", () => {
   fireEvent.click(status); // Completed
   expect(screen.queryByText(/Overdue/)).not.toBeInTheDocument();
 });
+
+// בדיקות ללוגים
+test("הוספת משימה נכתבת ללוג", () => {
+  render(<App />);
+  addTask("Buy milk");
+  const logs = JSON.parse(localStorage.getItem("appLogs"));
+  expect(logs[logs.length - 1]).toContain('INFO Task added: "Buy milk"');
+});
+
+test("שגיאה בשמירה נכתבת ללוג", () => {
+  render(<App />);
+  fireEvent.click(screen.getByText("+ Add Task"));
+  fireEvent.click(screen.getByText("Save Task"));
+  const logs = JSON.parse(localStorage.getItem("appLogs"));
+  expect(logs[logs.length - 1]).toContain("ERROR Save failed: missing task name");
+});
